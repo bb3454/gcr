@@ -30,9 +30,9 @@ jobs:
         id: build_image
         if: success()
         run:  | 
-                 docker build -f ./sonarr.Dockerfile --tag ghcr.io/${{ github.repository }}:${{ steps.ts.outputs.milliseconds_since_epoch }} .
+                 docker build -f ./sonarr.Dockerfile --tag ghcr.io/${{ github.repository }}/sonarr:${{ steps.ts.outputs.milliseconds_since_epoch }} .
       - name: Publish to registry
         id: publish_image
         if: success()
         run:  | 
-                 docker push ghcr.io/${{ github.repository }}:${{ steps.ts.outputs.milliseconds_since_epoch }}
+                 docker push ghcr.io/${{ github.repository }}/sonarr:${{ steps.ts.outputs.milliseconds_since_epoch }}
