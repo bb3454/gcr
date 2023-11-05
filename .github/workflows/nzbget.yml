@@ -1,0 +1,38 @@
+# This is a basic workflow that is manually triggered
+
+name: nzbget workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: nzbget
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Timestamp
+        id: ts
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: "YYYY_MM_DD HH_mm_ss_SSS"
+      - name: Login
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT }}
+      - name: Build
+        id: build_image
+        if: success()
+        run:  | 
+                 docker build -f ./Dockerfile --tag ghcr.io/${{ github.repository }}:${{ steps.ts.outputs.milliseconds_since_epoch }} .
+      - name: Publish to registry
+        id: publish_image
+        if: success()
+        run:  | 
+                 docker push ghcr.io/${{ github.repository }}:${{ steps.ts.outputs.milliseconds_since_epoch }}
