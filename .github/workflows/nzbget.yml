@@ -30,7 +30,7 @@ jobs:
         id: build_image
         if: success()
         run:  | 
-                 docker build -f ./nzbget.Dockerfile --tag ghcr.io/${{ github.repository }}/nzbget:${{ steps.ts.outputs.milliseconds_since_epoch }} .
+                 docker build -f ./nzbget.Dockerfile --tag ghcr.io/${{ github.repository }}/nzbget:latest .
       - name: Publish to registry
         id: publish_image
         if: success()
