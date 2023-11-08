@@ -35,4 +35,4 @@ jobs:
         id: publish_image
         if: success()
         run:  | 
-                 docker push --all_tags ghcr.io/${{ github.repository }}/nzbget
+                 docker push --all-tags ghcr.io/${{ github.repository }}/nzbget
